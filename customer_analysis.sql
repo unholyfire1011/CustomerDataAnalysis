@@ -23,34 +23,8 @@ with customer_type as(
   from customer
 )
 SELECT customer_segment, COUNT(*) from customer_type GROUP BY customer_segment
---Top 3 most purchased products within each category
-SELECT 
-    t1.category,
-    t1.item_purchased,
-    t1.total_purchases
-FROM (
-    SELECT 
-        category,
-        item_purchased,
-        COUNT(*) AS total_purchases
-    FROM customer
-    GROUP BY category, item_purchased
-) t1
-WHERE (
-    SELECT COUNT(*)
-    FROM (
-        SELECT 
-            category,
-            item_purchased,
-            COUNT(*) AS total_purchases
-        FROM customer
-        GROUP BY category, item_purchased
-    ) t2
-    WHERE t2.category = t1.category
-      AND t2.total_purchases > t1.total_purchases
-) < 3
-ORDER BY t1.category, t1.total_purchases DESC;
---Are customers who are repeat buyers (more than 5 previous purchases) also likely to subscribe?
+
+  --Are customers who are repeat buyers (more than 5 previous purchases) also likely to subscribe?
 SELECT subscription_status,
        COUNT(customer_id) AS repeat_buyers
 FROM customer
